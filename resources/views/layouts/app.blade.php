@@ -18,6 +18,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @stack('styles')
 </head>
 <body>
     <div id="app">
@@ -38,20 +39,8 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
+                        
+                        @Auth
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
@@ -69,14 +58,41 @@
                                     </form>
                                 </div>
                             </li>
-                        @endguest
+                        @endAuth
                     </ul>
                 </div>
             </div>
         </nav>
 
-        <main class="py-4">
-            @yield('content')
+        <main class="py-4 container-lg">
+            @auth
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="list-group" id="list-tab" role="tablist">
+                            <a class="list-group-item {{request()->segment(1) == '' ? 'active' : ''}}" href="{{ url('/') }}">
+                                Dashboard
+                            </a>
+                            <a class="list-group-item {{request()->segment(1) == 'tickets' ? 'active' : ''}}" href="{{ url('/tickets') }}">
+                                Tickets
+                            </a>
+                            
+                            @if(Auth::user()->is_admin == 1)
+                            <a class="list-group-item {{request()->segment(1) == 'users' ? 'active' : ''}}" href="{{ url('/users') }}">
+                                Users
+                            </a>
+                            <a class="list-group-item {{request()->segment(1) == 'categories' ? 'active' : ''}}" href="{{ url('/categories') }}">
+                                Categories
+                            </a>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="col-lg-10">
+                        @yield('content')
+                    </div>
+                </div>
+            @else
+                @yield('content')
+            @endauth
         </main>
     </div>
 </body>

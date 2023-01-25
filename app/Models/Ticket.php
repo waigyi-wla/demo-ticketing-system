@@ -10,7 +10,7 @@ class Ticket extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'category_id', 'title', 'priority', 'description', 'status'
+        'user_id', 'developer_id', 'category_id', 'code', 'title', 'priority', 'description', 'status'
     ];
 
     public function category()
@@ -26,5 +26,10 @@ class Ticket extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function developer()
+    {
+        return $this->belongsTo(User::class, 'developer_id');
     }
 }

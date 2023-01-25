@@ -1,23 +1,26 @@
+
+
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+    <h3>Dashboard</h3>
 
-                    {{ __('You are logged in!') }}
-                </div>
+    <div class="d-flex align-items-center justify-content-around mt-5" >
+
+        @if(Auth::user()->is_developer != 1)
+            <div class="card border-success" style="padding: 50px">
+                <div class="card-header text-success">Open: {{$open}}</div>
             </div>
+        @endif
+        
+        <div class="card border-warning" style="padding: 50px">
+            <div class="card-header text-warning">Assigned: {{$assigned}}</div>
+        </div>
+
+        <div class="card border-danger" style="padding: 50px">
+            <div class="card-header text-danger">Closed: {{$closed}}</div>
         </div>
     </div>
-</div>
+            
 @endsection
